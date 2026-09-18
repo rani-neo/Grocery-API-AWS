@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test</title>
+</head>
+<body>
+    <button id="preFlightButton">Send Pre-flight Request</button>
+    <button id="regularRequestButton">Send Regular Request</button>
+
+    <script>
+        const preFlightButton = document.getElementById('preFlightButton');
+        const regularRequestButton = document.getElementById('regularRequestButton');
+        const apiUrl = 'http://localhost:5000/api/auth/login'; // Replace with your server's URL
+
+        preFlightButton.addEventListener('click', () => {
+            fetch(apiUrl, {
+                method: 'OPTIONS', // Use OPTIONS method for pre-flight
+                headers: {
+                    'Origin': 'http://127.0.0.1:5500', // Replace with your client's origin
+                    'Access-Control-Request-Method': 'POST',
+                    'Access-Control-Request-Headers': 'Content-Type',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('CORS pre-flight successful');
+                    
+                    // After a successful pre-flight, you can trigger the login request here
+                    fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                       body: JSON.stringify({
+  Username: 'testuser',  
+  Password: 'testpass'   
+})
+, // Replace with actual credentials
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            console.error('Regular request failed');
+                        }
+                    })
+                    .then(data => {
+                        console.log('Response data:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                } else {
+                    console.error('CORS pre-flight failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        regularRequestButton.addEventListener('click', () => {
+            fetch(apiUrl, {
+                method: 'POST', // Use any other HTTP method for regular requests
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: 'testuser', password: 'testpassword' }), // Replace with actual credentials
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.error('Regular request failed');
+                }
+            })
+            .then(data => {
+                console.log('Response data:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

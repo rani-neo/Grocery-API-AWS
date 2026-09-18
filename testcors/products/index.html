@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CORS Test - Products</title>
+</head>
+<body>
+  <button id="fetchButton">Fetch Products</button>
+
+  <script>
+   const apiUrl = 'http://192.168.1.103:5000/api/products';
+ // Replace with your IP
+; // Replace with your IP
+
+
+    document.getElementById('fetchButton').addEventListener('click', () => {
+      fetch(apiUrl) // ← SIMPLE GET request, no headers
+        .then(response => response.json())
+        .then(data => console.log('Response:', data))
+        .catch(err => console.error('Fetch error:', err));
+    });
+  </script>
+</body>
+</html>

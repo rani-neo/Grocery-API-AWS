@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST Request Demo</title>
+</head>
+<body>
+    <h1>POST Request Demo</h1>
+
+    <button id="postButton">Send POST Request</button>
+
+    <script>
+  const apiUrl = 'http://localhost:5000/api/orders';
+
+  const dataToSend = {
+    OrderNo: 1001,
+    OrderDate: "2024-10-01",
+    CustomerNumber: 9876543210,
+    ProductCode: 101,
+    ProductName: "Red Shirt",
+    ProductQuantity: 2,
+    ProductPrice: 29.99,
+    TotalAmount: 59.98,
+    ModeOfPayment: "Online"
+  };
+
+  document.getElementById('postButton').addEventListener('click', () => {
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Response data:', data);
+      alert('POST request successful!');
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+      alert('Error: POST request failed.');
+    });
+  });
+</script>
+
+</body>
+</html>
+
+

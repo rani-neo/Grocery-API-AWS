@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>POST Product Demo</title>
+</head>
+<body>
+  <h1>POST Product Demo</h1>
+  <button id="postButton">Send Product</button>
+
+  <script>
+    const apiUrl = 'http://localhost:5000/api/products';
+
+    const dataToSend = {
+      ProductCode: 301,
+      ProductName: "White Sneakers XYZ",
+      ProductQuantity: 15,
+      Product_price: 69.99
+    };
+
+    document.getElementById('postButton').addEventListener('click', () => {
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Response data:', data);
+        alert(' Product POST successful!');
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        alert('Product POST failed.');
+      });
+    });
+  </script>
+</body>
+</html>

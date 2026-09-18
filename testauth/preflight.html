@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CORS Test</title>
+</head>
+<body>
+  <button id="preFlightButton">Send Pre-flight Request</button>
+  <button id="regularRequestButton">Send Regular Request</button>
+
+  <script>
+    const preFlightButton = document.getElementById('preFlightButton');
+    const regularRequestButton = document.getElementById('regularRequestButton');
+    const apiUrl = 'http://localhost:5000/api/auth/login';
+
+    // Preflight request
+    preFlightButton.addEventListener('click', () => {
+      fetch(apiUrl, {
+        method: 'OPTIONS',
+        headers: {
+          'Origin': 'http://127.0.0.1:5500',
+          'Access-Control-Request-Method': 'POST',
+          'Access-Control-Request-Headers': 'Content-Type',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('CORS pre-flight successful');
+        } else {
+          console.error('CORS pre-flight failed');
+        }
+      })
+      .catch(error => {
+        console.error(' Pre-flight Error:', error);
+      });
+    });
+
+    // Regular login POST request
+    regularRequestButton.addEventListener('click', () => {
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Username: 'testuser',    //  FIXED: Capitalized keys to match backend
+          Password: 'testpass'
+        }),
+      })
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Login Response:', data);
+        } else {
+          const errorData = await response.json();
+          console.error('Regular request failed:', errorData.message);
+        }
+      })
+      .catch(error => {
+        console.error(' Fetch Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Demo</title>
+</head>
+<body>
+    <button id="fetchButton">Fetch Data</button>
+
+    <script>
+        // Paste the JavaScript code provided in the previous response here
+        const apiUrl = 'http://localhost:5000/api/orders'; //
+
+        document.getElementById('fetchButton').addEventListener('click', () => {
+            fetch(apiUrl)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then(data => {
+                console.log('Response data:', data);
+              })
+              .catch(error => {
+                console.error('Fetch error:', error);
+              });
+        });
+    </script>
+</body>
+</html>
